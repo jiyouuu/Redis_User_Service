@@ -1,0 +1,141 @@
+# services:
+#   user_service:
+#     build: ./services/user_service
+  
+#     volumes:
+#       - ./services/user_service/app:/app   
+#     # 도커파일의 바로 상위파일 app에 내가 만든것을 올리는 거임
+
+#     ports:
+#       - "8001:8001"
+    
+#     # environment:
+#     #   - DATABASE_URL=mysql+asyncmy://${DB_USER}:${DB_PASSWORD}@user_db:3306/user_db
+#     #   - REDIS_URL=${REDIS_URL}
+
+#     env_file:
+#       # - ./services/user_service/.env  # .env 파일에서 환경변수 로드
+#       - ./env
+
+#   	# Compose v3 이상에선 condition: 지원 안 됨 → 리스트만 가능
+#     depends_on:
+#       - user_db     # Compose v3+에서는 리스트로 작성
+#       - redis_db
+#     # depends_on:
+#     #   user_db:
+#     #     condition: service_healthy  # 제대로 할 수 있을때 시작해라
+#     #   redis_db:
+#     #     condition:service_started
+      
+#     networks:
+#       - webnet
+
+#   user_db : 
+#     image: mysql:8.0
+#     restart: always
+#     command:
+#       --default-authentication-plugin=mysql_native_password
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=${USER_DB_ROOT_PASSWORD}
+#       - MYSQL_DATABASE=user_db
+#       - MYSQL_USER=${DB_USER}
+#       - MYSQL_PASSWORD=${DB_PASSWORD}
+
+#     healthcheck:
+#       test: ["CMD","mysqladmin","ping","-h", "localhost"]
+#       interval: 10s
+#       timeout: 30s
+#       retries: 5
+#     networks:
+#       - webnet
+
+    
+#   redis_db:
+#     image: redis:alpine
+#     networks: 
+#       - webnet
+
+# networks:
+#   webnet:
+
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80" 
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api_gateway
+    networks:
+      - webnet
+
+  api_gateway:
+    build: ./gateway
+    volumes: 
+      - ./gateway/app:/app
+    ports:
+      - 8080:8000
+    environment:
+      - USER_SERVICE_URL=http://user_service:8001
+    # depends_on:
+    #   - user_service: {condition:service_started}
+    depends_on:
+      - user_service
+    networks:
+      - webnet
+  user_service:
+    build: ./services/user_service
+
+    volumes:
+      - ./services/user_service/app:/app
+
+    ports:
+      - "8001:8001"
+
+    environment:
+      - DATABASE_URL=mysql+asyncmy://${DB_USER}:${DB_PASSWORD}@user_db:3306/user_db
+      - REDIS_URL=${REDIS_URL}
+
+    # env_file:
+      # - ./services/user_service/.env
+      # - ./.env
+
+    # Compose v3 이상에선 condition: 지원 안 됨 → 리스트만 가능
+    depends_on:
+      - user_db
+      - redis_db
+
+    networks:
+      - webnet
+
+  user_db:
+    image: mysql:8.0
+    ports:
+      - 33061:3306
+    restart: always
+    command:
+      --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=${USER_DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=user_db
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+    networks:
+      - webnet
+
+  redis_db:
+    image: redis:alpine
+    networks:
+      - webnet
+
+networks:
+  webnet:

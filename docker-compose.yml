@@ -91,7 +91,7 @@ services:
 
     volumes:
       - ./services/user_service/app:/app
-
+      - D:/for_boot/PROJECT/frontend/assets:/app/frontend/assets
     ports:
       - "8001:8001"
 

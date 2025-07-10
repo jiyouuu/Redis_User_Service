@@ -36,7 +36,7 @@ async def reverse_proxy(request: Request) :    # request: Request를 통해 클�
 
 # /api/users로 시작하는 요청이면 USER_SERVICE_URL로 보내고, # 그 외의 경로는 404 에러로 처리
 # 즉, 지금은 유저 관련 요청만 Gateway에서 프록시하도록 제한하고 있는 상태
-    if path.startswith("/api/users"):
+    if path.startswith("/api/users") or path.startswith("/api/auth"):
         base_url = USER_SERVICE_URL
     else:
         raise HTTPException(status_code=404, detail="Endpoint not found")

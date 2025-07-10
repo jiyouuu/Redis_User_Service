@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>회원가입</title>
+  <link rel="stylesheet" href="./assets/css/form.css?v=1.2" />
+</head>
+<body class="grey_color">
+    <div class="headerTop">
+        <div class="center flex6">
+            <h1 style="margin-right: auto;">MSA PROJECT</h1>
+            <div id="divGlobalMenu">
+            <ul class="flex1">
+                <li class="home"><a href="/" title="홈">HOME</a></li>
+                <li class="logBtn login"><a href="login.html" title="로그인"><span>LOGIN</span></a></li>
+            </ul>
+            </div>
+        </div>
+        </div>
+
+
+  <div class="form-card">
+    <h2>회원가입</h2>
+    <form id = "register-form" action="/register" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="username">닉네임</label>
+        <input type="text" id="username" name="username" placeholder="닉네임을 입력하세요" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">이메일(로그인 ID)</label>
+        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required />
+      </div>
+      <div id="error-message2" class="error-message"></div>
+
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required />
+      </div>
+
+      <div class="form-group">
+        <label for="passwordConfirm">비밀번호 확인</label>
+        <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 다시 입력하세요" required />
+      </div>
+      <div id="error-message" class="error-message"></div>
+      <div class="form-group">
+        <label for="intro">자기소개 (선택사항)</label>
+        <textarea style ="width: 100%" id="intro" name="intro" rows="4" placeholder="나를 표현해 보아요 !"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="profile_image">프로필 사진 (선택사항)</label>
+        <input type="file" id="profile_image" name="profile_image" accept="image/*" />
+      </div>
+
+      <div class="form-actions">
+        <button id = "submit-btn" type="submit" class="btn">회원가입</button>
+      </div>
+    </form>
+    <div class="existing-account">
+            <h3>이미 계정이 있으신가요? <a href="/login">로그인</a></h3>
+    </div>
+  </div>
+
+  <script>
+    // 변수 먼저 정의
+    const passwordInput = document.getElementById('password');
+    const passwordConfirmInput = document.getElementById('passwordConfirm');
+    const errorEl = document.getElementById('error-message');
+    const errorE2 = document.getElementById('error-message2');
+    const emailInput = document.getElementById('email');
+    // 이메일 유효성 검사 정규식
+    const isValidEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+    
+    // 이메일 검사 함수
+    function checkEmailFormat() {
+    const email = emailInput.value;
+    if (email && !isValidEmail(email)) {
+      errorE2.innerText = '올바른 이메일 형식을 입력하세요.';
+    } else {
+      errorE2.innerText = '';
+    }
+    } 
+
+    // 비밀번호 일치 검사 함수
+    function checkPasswordsMatch() {
+        if (passwordInput.value && passwordConfirmInput.value) {
+        if (passwordInput.value !== passwordConfirmInput.value) {
+            errorEl.innerText = '비밀번호가 일치하지 않습니다.';
+            return;
+        }
+        }
+        errorEl.innerText = ''; // 비밀번호가 일치하면 메시지 지움
+    }
+
+    passwordInput.addEventListener('input', checkPasswordsMatch);
+    passwordConfirmInput.addEventListener('input', checkPasswordsMatch);
+    emailInput.addEventListener('input', checkEmailFormat);
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            const errorEl = document.getElementById('error-message');
+            errorEl.innerText = '';
+            submitBtn.disabled = true;
+            submitBtn.innerText = '처리 중...';
+
+            const imageInput = document.getElementById('profile_image');
+           
+            // 2. 텍스트 데이터만 먼저 추출
+            const formData = new FormData(e.target);
+            const textData = {
+                username: formData.get('username'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                bio: formData.get('intro')
+            };
+
+            try {
+                // 3. 텍스트 데이터로 회원가입 및 자동 로그인 요청
+                const registerResponse = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(textData)
+                });
+
+
+                if (!registerResponse.ok) {
+                    const errorData = await registerResponse.json();
+                    throw new Error(errorData.detail || '회원가입에 실패했습니다.');
+                }
+
+                // 4. 프로필 사진 파일이 있으면, 이어서 이미지 업로드 요청
+                const imageFile = imageInput.files[0];
+                if (imageFile) {
+                    const imageFormData = new FormData();
+                    imageFormData.append("file", imageFile);
+
+                    const imageResponse = await fetch('/api/users/me/upload-image', {
+                        method: 'POST',
+                        body: imageFormData,
+                        credentials: 'include' // 자동 로그인된 세션 쿠키를 보내기 위해 필수
+                    });
+
+
+ 
+
+                    if (!imageResponse.ok) {
+                        console.error('이미지 업로드에 실패했지만, 회원가입은 완료되었습니다.');
+                    }
+
+                }
+
+                alert('회원가입이 완료되었습니다. 메인 페이지로 이동합니다.');
+                window.location.href = '/index.html';
+
+            } catch(error) {
+                errorEl.innerText = error.message;
+            } finally {
+
+                submitBtn.disabled = false;
+                submitBtn.innerText = '가입하기';
+
+            }
+
+        });
+
+    </script>
+
+
+</body>
+</html>

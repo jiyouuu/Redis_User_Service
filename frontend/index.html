@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="./assets/css/style.css?v=1.2">
 
-<title>MY BLOG</title>
+<title>MSA 프로젝트</title>
 <style>
     html, body {
     font-size: 15px;
@@ -17,11 +17,12 @@
 <body class="grey_color">
     <div class="headerTop">
         <div class="center flex6">
+          <h1 style="margin-right: auto;">MSA PROJECT</h1>
             <div id="divGlobalMenu">
                 <ul class="flex1">
                     <li class="home"><a href="/" title="홈">HOME</a></li>
-                    <li class="logBtn login"><a href="/login" title="로그인"><span>LOGIN</span></a></li>
-                    <li class="logBtn login"><a href="/register" title="회원가입"><span>Sign up</span></a></li>
+                    <li class="logBtn login"><a href="login.html" title="로그인"><span>LOGIN</span></a></li>
+                    <li class="logBtn login"><a href="register.html" title="회원가입"><span>Sign up</span></a></li>
                 </ul>
             </div>
         </div>
@@ -68,14 +69,31 @@
             </div>
         </article>
 
+        <!-- 세번째 글 내용 나올 예정 -->
+        <article class="card">
+            <div class="card-content">
+            <h3><b>세번째 글 제목 나올거임</b></h3>
+            <p>
+            세번째 글 내용 나올 예정 
+            </p>
+            <div style="display:flex; justify-content: space-between; align-items: center;">
+                <button class="btn">READ MORE &raquo;</button>
+                <span class="text-right">
+                <b>Comments &nbsp;</b><span class="tag-badge">9</span>
+                </span>
+            </div>
+            </div>
+        </article>
+
         </div>
 
         <aside class="sidebar">
         <!-- 자기소개 즉 작은 마이페이지 느낌  -->
         <section class="card">
+            <img src="./assets/ras.jpg" style="width:100%">
             <div class="card-content">
             <h4><b>회원의 닉네임 받아올 거임</b></h4>
-            <p style="margin-top:20px">
+            <p style="margin-top:10px">
                 자기소개 넣을 예정/
                 다른 입력 받은 데이터 넣어도 되고 ? 
             </p>
@@ -89,25 +107,25 @@
             <h2>주간의 인기 포스트</h2>
             <ul class="list-unstyled popular-posts">
                 <li>
-                <div>
+                <div style = 'padding: 20px;'>
                     <span class="title">제목</span><br />
                     <span class="subtitle">내용</span>
                 </div>
                 </li>
                 <li>
-                <div>
+                <div style = 'padding: 20px;'>
                     <span class="title">제목</span><br />
                     <span class="subtitle">내용</span>
                 </div>
                 </li>
                 <li>
-                <div>
+                <div style = 'padding: 20px;'>
                     <span class="title">제목</span><br />
                     <span class="subtitle">내용</span>
                 </div>
                 </li>
                 <li>
-                <div>
+                <div style = 'padding: 20px;'>
                     <span class="title">제목</span><br />
                     <span class="subtitle">내용</span>
                 </div>

@@ -1,0 +1,190 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  padding-top: 5px; /* header 높이만큼 밀어줌 */
+}
+        /* 공통 기본 스타일 초기화 */
+        div, span, ul, li {
+        margin: 0;
+        padding: 0;
+        }
+
+        /* 블록 요소 기본 설정 */
+        div {
+        display: block;
+        }
+
+        /* 헤더 구분선 */
+        .headerTop {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #fff;
+            z-index: 1000;
+            border-bottom: 1px solid #ededed;
+        }
+
+        .headerTop h1 {
+        font-size: 30px;
+        margin: 0;
+        margin-left: -50px;
+        padding: 0;
+        }
+
+        .headerTop .center {
+        display: flex;
+        justify-content: space-between; /* ✅ 좌우 양쪽 정렬 */
+        align-items: center;  /* 수직 정렬 */
+        height: 80px;          /* 전체 높이 제한 */
+        padding: 0 20px;
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        }
+
+        @media screen and (max-width: 1281px) {
+        .headerTop .center {
+            padding: 12px 0;
+            width: calc(100% - 40px);
+            margin: 0 20px;
+        }
+        }
+
+        @media screen and (max-width: 1480px) {
+        .headerTop .center {
+            width: calc(100% - 40px);
+            margin: 0 20px;
+        }
+        }
+
+
+        /* 메뉴 줄 높이 좁게 만들기 */
+        #divGlobalMenu > ul {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+        margin: 0;  /* 여기서 꼭 margin-top: 0으로! */
+        }
+
+        /* 메뉴 아이템 간격 */
+        #divGlobalMenu > ul > li:not(:last-child) {
+        margin-right: 35px;
+        }
+        #divGlobalMenu > ul > li {
+        line-height: 1;
+        }
+        @media screen and (max-width: 1281px) {
+        #divGlobalMenu > ul > li:not(:last-child) {
+            margin-right: 20px;
+        }
+        }
+
+        @media screen and (max-width: 1025px) {
+        #divGlobalMenu > ul > li:not(:last-child) {
+            margin-right: 10px;
+        }
+        }
+
+        /* 메뉴 리스트 아이템 기본 */
+        li {
+        display: list-item;
+        text-align: -webkit-match-parent;
+        }
+
+        /* 링크 스타일 */
+        a {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 17px;
+        }
+
+ .form-card {
+      max-width: 500px;
+      margin: 100px auto;
+      padding: 40px;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .form-card h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-actions {
+      text-align: center;
+    }
+    
+    /* 버튼 스타일 */
+      .form-actions .btn {
+        display: inline-block;
+        padding: 10px 18px;
+        background-color: transparent;
+        border: 2px solid #000;
+        color:#000;
+        font-weight: 700;
+        cursor: pointer;
+        border-radius: 5px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+        user-select: none;
+        }
+
+       .form-actions .btn:hover {
+        background-color: #000;
+        color: #fff;
+        }
+
+        .existing-account {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #555;
+        }
+
+        .existing-account a {
+        color: #000;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+        }
+
+        .existing-account a:hover {
+        color: #000;
+        text-decoration: underline;
+        cursor: pointer;
+        }
+
+        .error-message {
+        color: red;
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 15px;
+      }
+
+      .error-message2{
+        color: red;
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 15px;
+      }

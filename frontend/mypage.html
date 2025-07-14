@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>마이페이지</title>
+  <link rel="stylesheet" href="./assets/css/mypage.css?v=1.2" />
+</head>
+<body class="grey_color">
+  <!-- 상단바 -->
+  <div class="headerTop">
+    <div class="center flex6">
+      <h1 style="margin-right: auto;">MSA PROJECT</h1>
+      <div id="divGlobalMenu">
+        <ul class="flex1">
+          <li class="home"><a href="/" title="홈">HOME</a></li>
+          <li class="logBtn logout"><a href="#" id="logout-btn">LOGOUT</a></li>
+          <li class="logBtn mypage"><a href="mypage.html" title="마이페이지">MY PAGE</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mypage-wrapper">
+  <div class="mypage-title">
+    <h2>마이페이지</h2>
+  </div>
+
+  <main class="container" style="padding: 20px; max-width: 700px;">
+    <section id="profile-view" class="profile-flex">
+        <div class="profile-info">
+            <p><b>닉네임:</b> <span id="username"></span></p>
+            <p><b>이메일:</b> <span id="email"></span></p>
+            <p><b>자기소개:</b> <span id="bio"></span></p>
+            <button id="edit-btn" class="btn">수정하기</button>
+            <button id="pwd-edit-btn" class="btn">비밀번호 변경</button>
+        </div>
+
+        <div class="profile-image-box">
+            <img id="profile-image" src="/assets/kitty.jpg" alt="프로필 사진" />
+        </div>
+        </section>
+
+    <section id="profile-edit" style="display:none;">
+      <form id="edit-form" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="edit-username">닉네임</label>
+          <input type="text" id="edit-username" name="username" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-bio">자기소개</label>
+          <textarea id="edit-bio" name="bio" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="edit-profile-image">프로필 이미지</label>
+           <input type="file" id="edit-profile-image" name="profile_image" accept="image/*" />
+        </div>
+        <button type="submit" class="btn">저장</button>
+        <button type="button" id="cancel-btn" class="btn">취소</button>
+      </form>
+    </section>
+
+    <section id="pwd-edit" style="display:none;">
+      <form id="pwd-edit-form">
+        <div class="form-group">
+          <label for="current-password">현재 비밀번호</label>
+          <input type="password" id="current-password" name="current_password" required />
+      </div>
+      <div class="form-group">
+          <label for="new-password">새 비밀번호</label>
+          <input type="password" id="new-password" name="new_password" required />
+      </div>
+      <div class="form-group">
+          <label for="confirm-password">새 비밀번호 확인</label>
+          <input type="password" id="confirm-password" name="confirm_password" required />
+      </div>
+        <button type="submit" class="btn">저장</button>
+        <button type="button" id="pwd-cancel-btn" class="btn">취소</button>
+      </form>
+    </section>
+  </main>
+
+<script>
+ 
+  async function fetchProfile() {
+    try {
+      const res = await fetch('/api/auth/me', {
+      credentials: 'include'  // ← 세션 기반 인증이면 꼭 필요
+    });
+
+      console.log("📥 응답 상태 코드:", res.status);
+ 
+      const user = await res.json();
+      console.log('🙋‍♀️ 사용자 정보:', user); 
+ 
+
+      document.getElementById('username').innerText = user.username;
+      document.getElementById('email').innerText = user.email;
+      document.getElementById('bio').innerText = user.bio || '-';
+      document.getElementById('profile-image').src = user.profile_image_url || '/assets/kitty.jpg';
+
+      // 폼 초기값 세팅
+      document.getElementById('edit-username').value = user.username;
+      document.getElementById('edit-bio').value = user.bio || '';
+
+      // 파일 input value는 보안상 JS로 초기화 불가하므로 아래는 반드시 삭제
+    // document.getElementById('edit-profile-image').value = user.profile_image_url || '';
+    
+
+    } catch (error) {
+      alert('로그인이 필요합니다');
+      window.location.href = '/login.html';
+    }
+  }
+
+
+  // 편집 모드 토글
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('edit-btn').addEventListener('click', () => {
+    document.getElementById('profile-view').style.display = 'none';
+    document.getElementById('pwd-edit').style.display = 'none';
+    document.getElementById('profile-edit').style.display = 'block';
+  });
+
+   document.getElementById('pwd-edit-btn').addEventListener('click', () => {
+    document.getElementById('pwd-edit').style.display = 'block';
+    document.getElementById('profile-edit').style.display = 'none';
+    document.getElementById('profile-view').style.display = 'none';
+  });
+
+  document.getElementById('cancel-btn').addEventListener('click', () => {
+    document.getElementById('pwd-edit').style.display = 'none';
+    document.getElementById('profile-edit').style.display = 'none';
+    document.getElementById('profile-view').style.display = 'flex';
+  });
+});
+
+
+
+
+  // 수정 폼 제출 처리
+  document.getElementById('edit-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('username', document.getElementById('edit-username').value.trim());
+    formData.append('bio', document.getElementById('edit-bio').value.trim());
+
+    const fileInput = document.getElementById('edit-profile-image');
+    if (fileInput.files.length > 0) {
+      formData.append('profile_image', fileInput.files[0]);
+    }
+
+
+    try {
+      const res = await fetch('/api/auth/update/me', {
+        method: 'PUT',  // 수정 API는 PUT 메서드로 구현
+        body: formData,  // JSON이 아닌 FormData로 전송
+        credentials: 'include'
+      });
+
+      if (!res.ok) throw new Error('수정 실패');
+
+      alert('회원정보가 수정되었습니다.');
+      // 다시 프로필 로드
+      fetchProfile();
+
+      document.getElementById('profile-edit').style.display = 'none';
+      document.getElementById('profile-view').style.display = 'flex';
+      document.getElementById('pwd-edit').style.display = 'none';
+
+    } catch (error) {
+      alert('회원정보 수정에 실패했습니다.');
+    }
+  });
+
+
+  // 비밀번호 변경 js 코드 
+  document.getElementById("pwd-edit-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+
+  currentPassword= document.getElementById("current-password").value,
+  newPassword = document.getElementById("new-password").value,
+  confirmPassword= document.getElementById("confirm-password").value
+  
+  if (newPassword !== confirmPassword) {
+    alert("새 비밀번호가 일치하지 않습니다.");
+    return;
+  }
+
+  const res = await fetch("/api/auth/change-pwd", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+      current_password: currentPassword,
+      new_password: newPassword,
+    }),
+      credentials: "include"
+    });
+
+  if (res.ok) {
+    alert("비밀번호가 변경되었습니다.");
+    // 변경 성공 시 폼 초기화 및 화면 숨기기 등 처리
+    e.target.reset();
+    document.getElementById('pwd-edit').style.display = 'none';
+    document.getElementById("profile-view").style.display = "flex";
+  } else {
+    const error = await res.json();
+    alert("실패: " + error.detail);
+  }
+});
+
+document.getElementById("pwd-cancel-btn").addEventListener("click", () => {
+  document.getElementById("pwd-edit").style.display = "none";
+  document.getElementById("profile-view").style.display = "flex";
+});
+
+
+
+
+  // 로그아웃 버튼 처리
+  document.getElementById('logout-btn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    await fetch('/api/auth/logout', { method: 'POST' });
+    window.location.href = '/login.html';
+  });
+
+  // 페이지 로드 시 프로필 정보 가져오기
+  fetchProfile();
+</script>
+
+</body>
+</html>

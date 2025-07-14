@@ -1,0 +1,392 @@
+   /* 공통 기본 스타일 초기화 */
+        div, span, ul, li {
+        margin: 0;
+        padding: 0;
+        }
+
+        /* 블록 요소 기본 설정 */
+        div {
+        display: block;
+        }
+
+        /* 헤더 구분선 */
+        .headerTop {
+        border-bottom: 2px solid #ededed;
+        }
+
+
+
+       
+        .headerTop .center {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;  /* 수직 정렬 */
+        height: 80px;          /* 전체 높이 제한 */
+        padding: 0 20px;
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        }
+        @media screen and (max-width: 1281px) {
+        .headerTop .center {
+            padding: 12px 0;
+            width: calc(100% - 40px);
+            margin: 0 20px;
+        }
+        }
+
+        @media screen and (max-width: 1480px) {
+        .headerTop .center {
+            width: calc(100% - 40px);
+            margin: 0 20px;
+        }
+        }
+
+        /* 글로벌 메뉴 스타일
+        #divGlobalMenu > ul {
+        display: flex;
+        justify-content: flex-end;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        } */
+
+
+        /* 메뉴 줄 높이 좁게 만들기 */
+        #divGlobalMenu > ul {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+        margin: 0;  /* 여기서 꼭 margin-top: 0으로! */
+        }
+        /* 메뉴 아이템 간격 */
+        #divGlobalMenu > ul > li:not(:last-child) {
+        margin-right: 35px;
+        }
+
+        @media screen and (max-width: 1281px) {
+        #divGlobalMenu > ul > li:not(:last-child) {
+            margin-right: 20px;
+        }
+        }
+        #divGlobalMenu > ul > li {
+        line-height: 1;
+        }
+        @media screen and (max-width: 1025px) {
+        #divGlobalMenu > ul > li:not(:last-child) {
+            margin-right: 10px;
+        }
+        }
+
+        /* 메뉴 리스트 아이템 기본 */
+        li {
+        display: list-item;
+        text-align: -webkit-match-parent;
+        }
+
+        /* 링크 스타일 */
+        a {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 17px;
+        }
+
+
+/* 메인 컨테이너 */
+.container {
+  max-width: 720px;
+  margin: 32px auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* 마이페이지 타이틀 */
+.mypage-title h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #222;
+  border-bottom: 2px solid #6e6969;
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+/* 프로필 뷰 영역 */
+.profile-flex {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  align-items: flex-start;
+  flex-wrap: nowrap;  /* ✅ 줄바꿈 방지!! */
+}
+
+/* 왼쪽 텍스트 정보 */
+.profile-info {
+  flex: 1;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.profile-info p {
+  margin-bottom: 16px;
+  color: #000000;
+}
+
+.profile-info b {
+  color: #0f3b5b;
+  font: weight 50px;
+}
+
+/* 수정 버튼 */
+#edit-btn  {
+    display: inline-block;
+    padding: 10px 18px;
+    background-color: transparent;
+    border: 2px solid #000000;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    margin-top:50px;
+        }
+#edit-btn:hover {
+  background-color: #000000;
+  color:#ffffff;
+}
+
+#pwd-edit-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background-color: transparent;
+    border: 2px solid #000000;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    margin-top:50px;
+    margin-left:20px;
+}
+
+#pwd-edit-btn:hover{
+  background-color: #000000;
+  color:#ffffff;
+}
+/* 오른쪽 프로필 이미지 */
+.profile-image-box {
+  flex-shrink: 0;
+  width: 250px;
+  height: 250px;
+  border-radius: 30%;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1.0);
+  border: 3px solid #000000;
+}
+
+.profile-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+/* 편집 섹션 */
+#profile-edit {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 0px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-sizing: border-box;  /* ✅ 이거 꼭 */
+  width: 100%;
+
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+input[type=text], textarea, input[type=file] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1.8px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+input[type=text]:focus, textarea:focus {
+  outline: none;
+  border-color: #1d2b47;
+  box-shadow: 0 0 6px rgba(58,134,255,0.5);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+
+
+
+/* 저장 버튼 */
+#edit-form .btn[type="submit"] {
+  display: inline-block;
+    padding: 10px 18px;
+    background-color: transparent;
+    border: 2px solid #000000;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    user-select: none;
+}
+
+#edit-form .btn[type="submit"]:hover {
+  background-color: #080808;
+  color: #fff;
+}
+
+/* 취소 버튼 */
+#cancel-btn {
+   display: inline-block;
+    padding: 10px 18px;
+    background-color: transparent;
+    border: 2px solid #000000;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    margin-left:20px;
+}
+
+#cancel-btn:hover {
+  background-color: #ddd;
+}
+
+/* 비밀번호 변경 섹션 스타일 */
+#pwd-edit {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 400px;
+  margin: 0 auto; /* 가운데 정렬 */
+  box-sizing: border-box;
+}
+
+/* 비밀번호 변경 폼 그룹 */
+#pwd-edit .form-group {
+  margin-bottom: 20px;
+}
+
+/* 레이블 */
+#pwd-edit label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #222;
+  font-size: 16px;
+}
+
+/* 인풋 박스 */
+#pwd-edit input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1.8px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+#pwd-edit input[type="password"]:focus {
+  outline: none;
+  border-color: #1d2b47;
+  box-shadow: 0 0 6px rgba(58,134,255,0.5);
+}
+
+/* 버튼 공통 스타일 */
+#pwd-edit .btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: transparent;
+  border: 2px solid #000;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 6px;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+  user-select: none;
+  margin-top: 10px;
+}
+
+/* 저장 버튼은 오른쪽, 취소 버튼은 왼쪽으로 약간 띄우기 */
+#pwd-edit .btn[type="submit"] {
+  margin-right: 10px;
+}
+
+#pwd-edit .btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* 반응형: 화면 좁을 때도 예쁘게 */
+@media (max-width: 480px) {
+  #pwd-edit {
+    padding: 20px;
+  }
+
+  #pwd-edit .btn {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  #pwd-edit .btn[type="submit"] {
+    margin-right: 0;
+  }
+}
+
+/* 반응형 */
+@media (max-width: 720px) {
+  .profile-flex {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .profile-image-box {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+
+  .container {
+    padding: 20px;
+    margin: 20px;
+  }
+}
+
+
+

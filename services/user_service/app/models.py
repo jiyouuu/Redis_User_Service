@@ -1,5 +1,6 @@
 from typing import Optional
 from sqlmodel import Field, SQLModel
+from pydantic import BaseModel
 
 # 테이블 진짜 만드는 거
 class User(SQLModel, table =True):
@@ -20,7 +21,7 @@ class UserPublic(SQLModel):
     username:str
     email: str
     bio: Optional[str] = None
-    profile_image_filename : Optional[str] = None
+    profile_image_url : Optional[str] = None
 
 
 # 사용자 생성용
@@ -29,3 +30,15 @@ class UserCreate(SQLModel):
     email:str
     password: str  # plain password 받기
     bio:Optional[str]
+
+# 로그인용 
+class UserLogin(SQLModel):
+    email:str
+    password: str 
+
+
+
+# # 비번 변경
+class UpdatePassword(BaseModel):
+    current_password:str
+    new_password:str

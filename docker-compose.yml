@@ -65,7 +65,7 @@ services:
       - ./uploads/images:/app/static/images
  
     environment:
-      - DATABASE_URL=mysql+asyncmy://${DB_USER}:${DB_PASSWORD}@user_db:3306/blog_db
+      - DATABASE_URL=mysql+asyncmy://${DB_USER}:${DB_PASSWORD}@blog_db:3306/blog_db
       - REDIS_URL=${REDIS_URL}
 
     # env_file:

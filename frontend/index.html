@@ -110,7 +110,7 @@
 
         <section class="card" id="guest-card">
             <div class="card-content">
-            <h4><b>😊 로그인 후 나의 프로필을 확인해보아요 😊</b></h4>
+            <h4 style="margin-left: 40px;"><b>😊 로그인 후 나의 프로필을 확인해보아요 😊</b></h4>
             </div>
         </section>
 
@@ -168,7 +168,8 @@
     const welcomeMsg = document.getElementById('welcome-msg');
     const logoutMenu = document.getElementById('logout-menu');
     const mypageMenu = document.getElementById('mypage-menu')
-    
+    const blogName = document.getElementById('blog-name');
+    const tagline = document.querySelector('.tagline');
 
     try {
       const res = await fetch('/api/auth/me', {
@@ -188,7 +189,16 @@
 
         mypageMenu.style.display = "inline-block";
         logoutMenu.style.display = 'inline-block';
+
+        blogName.innerText = user.username;
+        tagline.innerHTML = `<span class="tag" id="blog-name" style="font-size: 20px; margin-right: 5px;">${user.username}</span>님의 하루가 이곳에 기록될거에요 🌈`;
       } else {
+
+        // 비로그인 상태일 때는 이렇게!
+        blogName.innerText = "";
+        tagline.innerText = "하루를 이곳에 기록해보세요 🌈";
+        tagline.style.fontSize = "20px"; 
+
         // 비로그인 상태: 로그인/회원가입 메뉴 보이고, 환영 메시지와 로그아웃 숨기기
         loginMenu.style.display = 'inline-block';
         registerMenu.style.display = 'inline-block';
